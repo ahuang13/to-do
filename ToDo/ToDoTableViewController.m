@@ -7,22 +7,62 @@
 //
 
 #import "ToDoTableViewController.h"
+#import "EditableCell.h"
 
 @interface ToDoTableViewController ()
 - (IBAction)onEditClick:(UIBarButtonItem *)sender;
 - (IBAction)onAddItemClick:(UIBarButtonItem *)sender;
+@property NSMutableArray *todoList;
 @end
 
 @implementation ToDoTableViewController
+
+//==============================================================================
+#pragma mark - Initializers
+//==============================================================================
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
+        [self initialize];
     }
     return self;
 }
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self initialize];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self initialize];
+    }
+    return self;
+}
+
+- (void)initialize
+{
+    self.todoList = [[NSMutableArray alloc] init];
+    
+    [self.todoList addObject:@"Test 1"];
+    [self.todoList addObject:@"Test 2"];
+    [self.todoList addObject:@"Test 3"];
+    [self.todoList addObject:@"Test 4"];
+    
+    NSLog(@"todoList.count = %d", self.todoList.count);
+}
+
+//==============================================================================
+#pragma mark - Controller Lifecycle
+//==============================================================================
 
 - (void)viewDidLoad
 {
@@ -35,46 +75,39 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Table view data source
+//==============================================================================
+#pragma mark - Table View Data Source
+//==============================================================================
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 5;
+    return self.todoList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    EditableCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+    int index = indexPath.row;
+    cell.editableCellTextField.text = [self.todoList objectAtIndex:index];
     
     return cell;
 }
 
-/*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
+
 
 /*
 // Override to support editing the table view.
@@ -119,7 +152,7 @@
  */
 
 //==============================================================================
-#pragma mark - IBAction Methods
+#pragma mark - IBActions
 //==============================================================================
 
 - (IBAction)onEditClick:(UIBarButtonItem *)sender {

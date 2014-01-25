@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface EditableCell : UITableViewCell
-
+@property (weak, nonatomic) IBOutlet UITextField *editableCellTextField;
 @end

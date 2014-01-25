@@ -20,6 +20,8 @@
 		929A48BC1894553B008C5710 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929A489E1894553B008C5710 /* UIKit.framework */; };
 		929A48C41894553B008C5710 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 929A48C21894553B008C5710 /* InfoPlist.strings */; };
 		929A48C61894553B008C5710 /* ToDoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 929A48C51894553B008C5710 /* ToDoTests.m */; };
+		929A48D11894572D008C5710 /* EditableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 929A48D01894572D008C5710 /* EditableCell.m */; };
+		929A48D418945B43008C5710 /* ToDoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 929A48D318945B43008C5710 /* ToDoTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,10 @@
 		929A48C11894553B008C5710 /* ToDoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ToDoTests-Info.plist"; sourceTree = "<group>"; };
 		929A48C31894553B008C5710 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		929A48C51894553B008C5710 /* ToDoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToDoTests.m; sourceTree = "<group>"; };
+		929A48CF1894572D008C5710 /* EditableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditableCell.h; sourceTree = "<group>"; };
+		929A48D01894572D008C5710 /* EditableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableCell.m; sourceTree = "<group>"; };
+		929A48D218945B43008C5710 /* ToDoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToDoTableViewController.h; sourceTree = "<group>"; };
+		929A48D318945B43008C5710 /* ToDoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToDoTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +118,10 @@
 				929A48A91894553B008C5710 /* ToDoAppDelegate.h */,
 				929A48AA1894553B008C5710 /* ToDoAppDelegate.m */,
 				929A48AC1894553B008C5710 /* Main.storyboard */,
+				929A48D218945B43008C5710 /* ToDoTableViewController.h */,
+				929A48D318945B43008C5710 /* ToDoTableViewController.m */,
+				929A48CF1894572D008C5710 /* EditableCell.h */,
+				929A48D01894572D008C5710 /* EditableCell.m */,
 				929A48B21894553B008C5710 /* Images.xcassets */,
 				929A48A11894553B008C5710 /* Supporting Files */,
 			);
@@ -245,6 +255,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				929A48D11894572D008C5710 /* EditableCell.m in Sources */,
+				929A48D418945B43008C5710 /* ToDoTableViewController.m in Sources */,
 				929A48AB1894553B008C5710 /* ToDoAppDelegate.m in Sources */,
 				929A48A71894553B008C5710 /* main.m in Sources */,
 			);

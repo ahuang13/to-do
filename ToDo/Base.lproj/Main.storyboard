@@ -4,16 +4,16 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--Table View Controller - To Do List-->
+        <!--To Do Table View Controller - To Do List-->
         <scene sceneID="Yg4-UD-N4v">
             <objects>
-                <tableViewController id="iXt-Nu-BZN" sceneMemberID="viewController">
+                <tableViewController id="iXt-Nu-BZN" customClass="ToDoTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6C6-xR-Fun">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ZkZ-eW-J3c">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ZkZ-eW-J3c" customClass="EditableCell">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZkZ-eW-J3c" id="eiK-lE-gWA">
@@ -23,7 +23,18 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="To Do List" id="b8m-sQ-EjO"/>
+                    <navigationItem key="navigationItem" title="To Do List" id="b8m-sQ-EjO">
+                        <barButtonItem key="leftBarButtonItem" title="Edit" id="Ew3-z0-NIe">
+                            <connections>
+                                <action selector="onEditClick:" destination="iXt-Nu-BZN" id="W1r-xr-7lJ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="+" id="gJt-Nx-xSi">
+                            <connections>
+                                <action selector="onAddItemClick:" destination="iXt-Nu-BZN" id="dzi-zT-Ulg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cx0-Ph-V1X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -14,7 +14,6 @@
 		929A48A71894553B008C5710 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 929A48A61894553B008C5710 /* main.m */; };
 		929A48AB1894553B008C5710 /* ToDoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 929A48AA1894553B008C5710 /* ToDoAppDelegate.m */; };
 		929A48AE1894553B008C5710 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 929A48AC1894553B008C5710 /* Main.storyboard */; };
-		929A48B11894553B008C5710 /* ToDoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 929A48B01894553B008C5710 /* ToDoViewController.m */; };
 		929A48B31894553B008C5710 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 929A48B21894553B008C5710 /* Images.xcassets */; };
 		929A48BA1894553B008C5710 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929A48B91894553B008C5710 /* XCTest.framework */; };
 		929A48BB1894553B008C5710 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 929A489A1894553B008C5710 /* Foundation.framework */; };
@@ -45,8 +44,6 @@
 		929A48A91894553B008C5710 /* ToDoAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToDoAppDelegate.h; sourceTree = "<group>"; };
 		929A48AA1894553B008C5710 /* ToDoAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToDoAppDelegate.m; sourceTree = "<group>"; };
 		929A48AD1894553B008C5710 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		929A48AF1894553B008C5710 /* ToDoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToDoViewController.h; sourceTree = "<group>"; };
-		929A48B01894553B008C5710 /* ToDoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToDoViewController.m; sourceTree = "<group>"; };
 		929A48B21894553B008C5710 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		929A48B81894553B008C5710 /* ToDoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToDoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		929A48B91894553B008C5710 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -115,8 +112,6 @@
 				929A48A91894553B008C5710 /* ToDoAppDelegate.h */,
 				929A48AA1894553B008C5710 /* ToDoAppDelegate.m */,
 				929A48AC1894553B008C5710 /* Main.storyboard */,
-				929A48AF1894553B008C5710 /* ToDoViewController.h */,
-				929A48B01894553B008C5710 /* ToDoViewController.m */,
 				929A48B21894553B008C5710 /* Images.xcassets */,
 				929A48A11894553B008C5710 /* Supporting Files */,
 			);
@@ -252,7 +247,6 @@
 			files = (
 				929A48AB1894553B008C5710 /* ToDoAppDelegate.m in Sources */,
 				929A48A71894553B008C5710 /* main.m in Sources */,
-				929A48B11894553B008C5710 /* ToDoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

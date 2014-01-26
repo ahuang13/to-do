@@ -52,7 +52,7 @@
     self.todoList = [[NSMutableArray alloc] init];
     
 #warning remove this later
-    [self.todoList addObject:@"Test 1"];
+    [self.todoList addObject:@"Test 1\nfsdajkfs\ndfhjuhe fdsjd "];
     [self.todoList addObject:@"Test 2"];
     [self.todoList addObject:@"Test 3"];
     [self.todoList addObject:@"Test 4"];
@@ -105,9 +105,11 @@
     
     // Configure the cell...
     int index = indexPath.row;
-    cell.editableCellTextField.text = [self.todoList objectAtIndex:index];
-    cell.editableCellTextField.delegate = self;
-    cell.editableCellTextField.tag = index;
+    cell.textView.text = [self.todoList objectAtIndex:index];
+    NSLog(@"self.todoList objectAtIndex:%d = %@", index, [self.todoList objectAtIndex:index]);
+    NSLog(@"cell.textView.text = %@", cell.textView.text);
+    cell.textView.delegate = self;
+    cell.textView.tag = index;
     
     return cell;
 }
@@ -162,6 +164,31 @@
 }
 
 //==============================================================================
+#pragma mark - Table View Delegate
+//==============================================================================
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"heightForRowAtIndexPath %d : %@", indexPath.row, [self.todoList objectAtIndex:indexPath.row]);
+
+    int index = indexPath.row;
+    NSString *item = [self.todoList objectAtIndex:index];
+    
+    CGFloat width = self.tableView.frame.size.width - 30;
+    CGSize size = CGSizeMake(width, MAXFLOAT);
+    UIFont *font = [UIFont systemFontOfSize:14];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil];
+    CGRect boundingRect = [item boundingRectWithSize:size
+                                             options:NSStringDrawingUsesLineFragmentOrigin
+                                          attributes:attributes
+                                             context:nil];
+    
+    NSLog(@"boundingRect = (%f, %f", boundingRect.size.width, ceil(boundingRect.size.height));
+    
+    return ceil(boundingRect.size.height) + 20;
+}
+
+//==============================================================================
 #pragma mark - UITextFieldDelegate
 //==============================================================================
 
@@ -192,6 +219,26 @@
 }
 
 //==============================================================================
+#pragma mark - UITextViewDelegate
+//==============================================================================
+
+//- (void)textViewDidEndEditing:(UITextView *)textView
+//{
+//    NSLog(@"textViewDidEndEditing");
+//    
+//    for (NSString *string in self.todoList) {
+//        NSLog(@"%@", string);
+//    }
+//    
+//    // Decide which text field based on it's tag and save data to the model.
+//    int index = textView.tag;
+//    NSString *item = textView.text;
+//    [self.todoList replaceObjectAtIndex:index withObject:item];
+//    
+//    [self.tableView reloadData];
+//}
+
+//==============================================================================
 #pragma mark - IBActions
 //==============================================================================
 
@@ -204,7 +251,7 @@
     // Get reference to the new cell and set focus in its TextField.
     int index = self.todoList.count - 1;
     EditableCell *cell = [self cellAtIndex:index];
-    [cell.editableCellTextField becomeFirstResponder];
+    [cell.textView becomeFirstResponder];
 }
 
 //==============================================================================

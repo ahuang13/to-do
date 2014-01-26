@@ -51,6 +51,7 @@
 {
     self.todoList = [[NSMutableArray alloc] init];
     
+#warning remove this later
     [self.todoList addObject:@"Test 1"];
     [self.todoList addObject:@"Test 2"];
     [self.todoList addObject:@"Test 3"];
@@ -147,5 +148,7 @@
 
 - (IBAction)onAddItemClick:(UIBarButtonItem *)sender {
     NSLog(@"onAddItemClick");
+    [self.todoList addObject:@""];
+    [self.tableView reloadData];
 }
 @end

@@ -75,6 +75,13 @@
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"touchesBegan:withEvent:");
+    [self.view endEditing:YES];
+    [super touchesBegan:touches withEvent:event];
+}
+
 //==============================================================================
 #pragma mark - Table View Data Source
 //==============================================================================
@@ -97,6 +104,8 @@
     // Configure the cell...
     int index = indexPath.row;
     cell.editableCellTextField.text = [self.todoList objectAtIndex:index];
+    cell.editableCellTextField.delegate = self;
+    cell.editableCellTextField.tag = index;
     
     return cell;
 }
@@ -143,12 +152,40 @@
 }
 
 //==============================================================================
+#pragma mark - UITextFieldDelegate
+//==============================================================================
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    NSLog(@"textFieldDidEndEditing");
+    
+    // Decide which text field based on it's tag and save data to the model.
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    NSLog(@"textFieldShouldReturn");
+
+    // Remove focus and keyboard when "Return" button is clicked.
+    [textField resignFirstResponder];
+    
+    return NO;
+}
+
+//==============================================================================
 #pragma mark - IBActions
 //==============================================================================
 
 - (IBAction)onAddItemClick:(UIBarButtonItem *)sender {
-    NSLog(@"onAddItemClick");
+
+    // Create item in backing array and reload the table to reflect.
     [self.todoList addObject:@""];
     [self.tableView reloadData];
+    
+    // Get reference to the new cell and set focus in its TextField.
+    int row = self.todoList.count - 1;
+    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    EditableCell *cell = (EditableCell *)[self.tableView cellForRowAtIndexPath:newIndexPath];
+    [cell.editableCellTextField becomeFirstResponder];
 }
 @end

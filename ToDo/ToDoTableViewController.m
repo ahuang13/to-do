@@ -16,6 +16,8 @@
 
 @implementation ToDoTableViewController
 
+NSString *const NSUSERDEFAULTS_TODOLIST_INDEX = @"todoListIndex";
+
 //==============================================================================
 #pragma mark - Initializers
 //==============================================================================
@@ -49,15 +51,13 @@
 
 - (void)initialize
 {
-    self.todoList = [[NSMutableArray alloc] init];
-    
-#warning remove this later
-    [self.todoList addObject:@"Test 1\nfsdajkfs\ndfhjuhe fdsjd "];
-    [self.todoList addObject:@"Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."];
-    [self.todoList addObject:@"Test 3"];
-    [self.todoList addObject:@"Test 4"];
-    
-    NSLog(@"todoList.count = %d", self.todoList.count);
+    // Load the saved todo list from NSUserDefaults;
+    // alloc a new one if there is no saved list.
+    self.todoList = [self loadFromUserDefaults];
+    if (!self.todoList) {
+        self.todoList = [[NSMutableArray alloc] init];
+    }
+    [self logTodoList];
 }
 
 //==============================================================================
@@ -67,21 +67,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-#warning Not getting called
-    NSLog(@"touchesBegan:withEvent:");
-    
-    [self.view endEditing:YES];
-    [super touchesBegan:touches withEvent:event];
 }
 
 //==============================================================================
@@ -106,8 +97,6 @@
     // Configure the cell...
     int index = indexPath.row;
     cell.textView.text = [self.todoList objectAtIndex:index];
-    NSLog(@"self.todoList objectAtIndex:%d = %@", index, [self.todoList objectAtIndex:index]);
-    NSLog(@"cell.textView.text = %@", cell.textView.text);
     cell.textView.delegate = self;
     cell.textView.tag = index;
     
@@ -124,12 +113,16 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
         // Delete the row from the data source
         int index = indexPath.row;
         [self.todoList removeObjectAtIndex:index];
         [self updateTagsFromIndex:index toIndex:self.todoList.count - 1];
+        
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView reloadData];
+        
+        [self saveToUserDefaults];
     }
 }
 
@@ -154,6 +147,7 @@
     
     // Reload the table view.
     [self.tableView reloadData];
+    [self saveToUserDefaults];
 }
 
 // Override to support conditional rearranging of the table view.
@@ -169,8 +163,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"heightForRowAtIndexPath %d : %@", indexPath.row, [self.todoList objectAtIndex:indexPath.row]);
-
+    // NSLog(@"heightForRowAtIndexPath %d : %@", indexPath.row, [self.todoList objectAtIndex:indexPath.row]);
+    
     int index = indexPath.row;
     NSString *item = [self.todoList objectAtIndex:index];
     
@@ -183,40 +177,9 @@
                                           attributes:attributes
                                              context:nil];
     
-    NSLog(@"boundingRect = (%f, %f", boundingRect.size.width, ceil(boundingRect.size.height));
+    // NSLog(@"boundingRect = (%f, %f", boundingRect.size.width, ceil(boundingRect.size.height));
     
     return ceil(boundingRect.size.height) + 30;
-}
-
-//==============================================================================
-#pragma mark - UITextFieldDelegate
-//==============================================================================
-
-#warning Remove these methods
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    NSLog(@"textFieldDidEndEditing");
-    
-    for (NSString *string in self.todoList) {
-        NSLog(@"%@", string);
-    }
-    
-    // Decide which text field based on it's tag and save data to the model.
-    int index = textField.tag;
-    NSString *item = textField.text;
-    [self.todoList replaceObjectAtIndex:index withObject:item];
-    
-    [self.tableView reloadData];
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    NSLog(@"textFieldShouldReturn");
-
-    // Remove focus and keyboard when "Return" button is clicked.
-    [textField resignFirstResponder];
-    
-    return NO;
 }
 
 //==============================================================================
@@ -226,11 +189,33 @@
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     NSLog(@"textViewDidEndEditing");
-
+    
     // Decide which text field based on it's tag and save data to the model.
     int index = textView.tag;
     NSString *item = textView.text;
     [self.todoList replaceObjectAtIndex:index withObject:item];
+    
+    [self saveToUserDefaults];
+    
+    // Reload this row to properly size the cell.
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
+    [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (BOOL)textView:(UITextView *)textView
+shouldChangeTextInRange:(NSRange)range
+ replacementText:(NSString *)text
+{
+    // NSLog(@"shouldChangeTextInRange");
+    
+    // Check if new text added is the Done key...
+    if([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO; // Return false so last "\n" doesn't get added
+    }
+    
+    return YES;
 }
 
 //==============================================================================
@@ -238,7 +223,7 @@
 //==============================================================================
 
 - (IBAction)onAddItemClick:(UIBarButtonItem *)sender {
-
+    
     // Create item in backing array and reload the table to reflect.
     [self.todoList addObject:@""];
     [self.tableView reloadData];
@@ -247,24 +232,49 @@
     int index = self.todoList.count - 1;
     EditableCell *cell = [self cellAtIndex:index];
     [cell.textView becomeFirstResponder];
+    
+    [self saveToUserDefaults];
 }
 
 //==============================================================================
 #pragma mark - Private Methods
 //==============================================================================
 
-- (EditableCell *)cellAtIndex:(NSInteger)index {
-    
+- (EditableCell *)cellAtIndex:(NSInteger)index
+{
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
     EditableCell *cell = (EditableCell *)[self.tableView cellForRowAtIndexPath:newIndexPath];
     
     return cell;
 }
 
-- (void)updateTagsFromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex {
-
+- (void)updateTagsFromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex
+{
     for (int i = fromIndex; i <= toIndex; i++) {
         [self cellAtIndex:i].tag = i;
+    }
+}
+
+- (void)saveToUserDefaults
+{
+    NSLog(@"*** saveToUserDefaults ***");
+    [self logTodoList];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:self.todoList forKey:NSUSERDEFAULTS_TODOLIST_INDEX];
+    [defaults synchronize];
+}
+
+- (NSMutableArray *)loadFromUserDefaults
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults objectForKey:NSUSERDEFAULTS_TODOLIST_INDEX];
+}
+
+- (void)logTodoList
+{
+    for (NSString *string in self.todoList) {
+        NSLog(@"%@", string);
     }
 }
 

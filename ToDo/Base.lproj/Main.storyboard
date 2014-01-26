@@ -35,11 +35,6 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="To Do List" id="b8m-sQ-EjO">
-                        <barButtonItem key="leftBarButtonItem" title="Edit" id="Ew3-z0-NIe">
-                            <connections>
-                                <action selector="onEditClick:" destination="iXt-Nu-BZN" id="W1r-xr-7lJ"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="+" id="gJt-Nx-xSi">
                             <connections>
                                 <action selector="onAddItemClick:" destination="iXt-Nu-BZN" id="dzi-zT-Ulg"/>

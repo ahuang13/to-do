@@ -10,7 +10,6 @@
 #import "EditableCell.h"
 
 @interface ToDoTableViewController ()
-- (IBAction)onEditClick:(UIBarButtonItem *)sender;
 - (IBAction)onAddItemClick:(UIBarButtonItem *)sender;
 @property NSMutableArray *todoList;
 @end
@@ -145,10 +144,6 @@
 //==============================================================================
 #pragma mark - IBActions
 //==============================================================================
-
-- (IBAction)onEditClick:(UIBarButtonItem *)sender {
-    NSLog(@"onEditClick");
-}
 
 - (IBAction)onAddItemClick:(UIBarButtonItem *)sender {
     NSLog(@"onAddItemClick");

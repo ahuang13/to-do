@@ -61,7 +61,7 @@ NSString *const NSUSERDEFAULTS_TODOLIST_INDEX = @"todoListIndex";
 }
 
 //==============================================================================
-#pragma mark - Controller Lifecycle
+#pragma mark - UIViewController
 //==============================================================================
 
 - (void)viewDidLoad
@@ -76,7 +76,7 @@ NSString *const NSUSERDEFAULTS_TODOLIST_INDEX = @"todoListIndex";
 }
 
 //==============================================================================
-#pragma mark - Table View Data Source
+#pragma mark - UITableViewDataSource
 //==============================================================================
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -158,7 +158,7 @@ NSString *const NSUSERDEFAULTS_TODOLIST_INDEX = @"todoListIndex";
 }
 
 //==============================================================================
-#pragma mark - Table View Delegate
+#pragma mark - UITableViewDelegate
 //==============================================================================
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -203,9 +203,7 @@ NSString *const NSUSERDEFAULTS_TODOLIST_INDEX = @"todoListIndex";
     [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (BOOL)textView:(UITextView *)textView
-shouldChangeTextInRange:(NSRange)range
- replacementText:(NSString *)text
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     // NSLog(@"shouldChangeTextInRange");
     

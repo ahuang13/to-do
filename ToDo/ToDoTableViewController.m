@@ -77,7 +77,9 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+#warning Not getting called
     NSLog(@"touchesBegan:withEvent:");
+    
     [self.view endEditing:YES];
     [super touchesBegan:touches withEvent:event];
 }
@@ -119,29 +121,37 @@
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"BEFORE: self.todoList.count = %d", self.todoList.count);
-
-    int index = indexPath.row;
-    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        int index = indexPath.row;
         [self.todoList removeObjectAtIndex:index];
+        [self updateTagsFromIndex:index toIndex:self.todoList.count - 1];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        [self.todoList insertObject:@"Insert Test" atIndex:index];
-        NSLog(@"commitEditingStyle:insert");
-        NSLog(@"AFTER: self.todoList.count = %d", self.todoList.count);
+        [self.tableView reloadData];
     }
 }
 
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    NSInteger fromIndex = fromIndexPath.row;
-    NSInteger toIndex = toIndexPath.row;
-    [self.todoList exchangeObjectAtIndex:fromIndex withObjectAtIndex:toIndex];
+    int fromIndex = fromIndexPath.row;
+    int toIndex = toIndexPath.row;
+    NSLog(@"moveRowAtIndexPath %d to %d", fromIndex, toIndex);
+    
+    // Remove item from underlying array.
+    NSString *itemToMove = [self.todoList objectAtIndex:fromIndex];
+    [self.todoList removeObjectAtIndex:fromIndex];
+    
+    // Insert item into new position.
+    [self.todoList insertObject:itemToMove atIndex:toIndex];
+    
+    // Update the tags for all items that have been shifted.
+    int startIndex = (fromIndex < toIndex) ? fromIndex : toIndex;
+    int endIndex = (fromIndex < toIndex) ? toIndex : fromIndex;
+    [self updateTagsFromIndex:startIndex toIndex:endIndex];
+    
+    // Reload the table view.
+    [self.tableView reloadData];
 }
 
 // Override to support conditional rearranging of the table view.
@@ -159,7 +169,16 @@
 {
     NSLog(@"textFieldDidEndEditing");
     
+    for (NSString *string in self.todoList) {
+        NSLog(@"%@", string);
+    }
+    
     // Decide which text field based on it's tag and save data to the model.
+    int index = textField.tag;
+    NSString *item = textField.text;
+    [self.todoList replaceObjectAtIndex:index withObject:item];
+    
+    [self.tableView reloadData];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -183,9 +202,28 @@
     [self.tableView reloadData];
     
     // Get reference to the new cell and set focus in its TextField.
-    int row = self.todoList.count - 1;
-    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
-    EditableCell *cell = (EditableCell *)[self.tableView cellForRowAtIndexPath:newIndexPath];
+    int index = self.todoList.count - 1;
+    EditableCell *cell = [self cellAtIndex:index];
     [cell.editableCellTextField becomeFirstResponder];
 }
+
+//==============================================================================
+#pragma mark - Private Methods
+//==============================================================================
+
+- (EditableCell *)cellAtIndex:(NSInteger)index {
+    
+    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    EditableCell *cell = (EditableCell *)[self.tableView cellForRowAtIndexPath:newIndexPath];
+    
+    return cell;
+}
+
+- (void)updateTagsFromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex {
+
+    for (int i = fromIndex; i <= toIndex; i++) {
+        [self cellAtIndex:i].tag = i;
+    }
+}
+
 @end

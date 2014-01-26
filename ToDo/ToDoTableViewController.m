@@ -130,6 +130,9 @@
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
+    NSInteger fromIndex = fromIndexPath.row;
+    NSInteger toIndex = toIndexPath.row;
+    [self.todoList exchangeObjectAtIndex:fromIndex withObjectAtIndex:toIndex];
 }
 
 // Override to support conditional rearranging of the table view.

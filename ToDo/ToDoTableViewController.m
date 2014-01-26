@@ -53,7 +53,7 @@
     
 #warning remove this later
     [self.todoList addObject:@"Test 1\nfsdajkfs\ndfhjuhe fdsjd "];
-    [self.todoList addObject:@"Test 2"];
+    [self.todoList addObject:@"Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."];
     [self.todoList addObject:@"Test 3"];
     [self.todoList addObject:@"Test 4"];
     
@@ -185,13 +185,14 @@
     
     NSLog(@"boundingRect = (%f, %f", boundingRect.size.width, ceil(boundingRect.size.height));
     
-    return ceil(boundingRect.size.height) + 20;
+    return ceil(boundingRect.size.height) + 30;
 }
 
 //==============================================================================
 #pragma mark - UITextFieldDelegate
 //==============================================================================
 
+#warning Remove these methods
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     NSLog(@"textFieldDidEndEditing");
@@ -222,21 +223,15 @@
 #pragma mark - UITextViewDelegate
 //==============================================================================
 
-//- (void)textViewDidEndEditing:(UITextView *)textView
-//{
-//    NSLog(@"textViewDidEndEditing");
-//    
-//    for (NSString *string in self.todoList) {
-//        NSLog(@"%@", string);
-//    }
-//    
-//    // Decide which text field based on it's tag and save data to the model.
-//    int index = textView.tag;
-//    NSString *item = textView.text;
-//    [self.todoList replaceObjectAtIndex:index withObject:item];
-//    
-//    [self.tableView reloadData];
-//}
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    NSLog(@"textViewDidEndEditing");
+
+    // Decide which text field based on it's tag and save data to the model.
+    int index = textView.tag;
+    NSString *item = textView.text;
+    [self.todoList replaceObjectAtIndex:index withObject:item];
+}
 
 //==============================================================================
 #pragma mark - IBActions
